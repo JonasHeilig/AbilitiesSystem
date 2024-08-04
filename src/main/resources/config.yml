@@ -1,3 +1,5 @@
 default-hearts: 4.0
 max-sprint-time: 5000
 cooldown-time: 5000
+cooldown-improvement-value: 500
+sprinttime-improvement-value: 500

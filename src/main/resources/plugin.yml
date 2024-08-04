@@ -7,7 +7,21 @@ commands:
     description: Set the amount of hearts for a player
     usage: /heart <player> <amount>
     permission: abilitiesSystem.heart
+  setCooldown:
+    description: Set the sprint cooldown time for a player
+    usage: /setCooldown <player> <cooldownTime>
+    permission: abilitiesSystem.setCooldown
+  setSprintTime:
+    description: Set the max sprint time for a player
+    usage: /setSprintTime <player> <sprintTime>
+    permission: abilitiesSystem.setSprintTime
 permissions:
   abilitiesSystem.heart:
     description: Allows the player to use the /heart command
+    default: op
+  abilitiesSystem.setCooldown:
+    description: Allows the player to set the sprint cooldown time
+    default: op
+  abilitiesSystem.setSprintTime:
+    description: Allows the player to set the max sprint time
     default: op
