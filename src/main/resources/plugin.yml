@@ -1,0 +1,13 @@
+name: AbilitiesSystem
+version: '1.0-SNAPSHOT'
+main: de.jonasheilig.abilitiesSystem.AbilitiesSystem
+api-version: '1.21'
+commands:
+  heart:
+    description: Set the amount of hearts for a player
+    usage: /heart <player> <amount>
+    permission: abilitiesSystem.heart
+permissions:
+  abilitiesSystem.heart:
+    description: Allows the player to use the /heart command
+    default: op
