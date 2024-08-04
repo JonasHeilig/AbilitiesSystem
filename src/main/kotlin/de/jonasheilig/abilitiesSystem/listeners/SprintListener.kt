@@ -1,25 +1,19 @@
 package de.jonasheilig.abilitiesSystem.listeners
 
 import de.jonasheilig.abilitiesSystem.AbilitiesSystem
+import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerToggleSprintEvent
 import org.bukkit.scheduler.BukkitRunnable
+import java.io.File
 import java.util.*
 
 class SprintListener : Listener {
 
     private val sprintTimes: MutableMap<UUID, Long> = mutableMapOf()
     private val cooldownTimes: MutableMap<UUID, Long> = mutableMapOf()
-    private val maxSprintTime: Long
-    private val cooldownTime: Long
-
-    init {
-        val config = AbilitiesSystem.instance.config
-        maxSprintTime = config.getLong("max-sprint-time", 10000L)
-        cooldownTime = config.getLong("cooldown-time", 5000L)
-    }
 
     @EventHandler
     fun onPlayerJoin(event: PlayerJoinEvent) {
@@ -36,6 +30,7 @@ class SprintListener : Listener {
         if (event.isSprinting) {
             val currentTime = System.currentTimeMillis()
             val lastCooldownTime = cooldownTimes[uuid] ?: 0
+            val cooldownTime = loadPlayerData(uuid, "cooldown-time", 5000L)
             if (currentTime < lastCooldownTime + cooldownTime) {
                 event.isCancelled = true
                 player.sendMessage("Du musst warten, bevor du wieder sprinten kannst!")
@@ -51,6 +46,7 @@ class SprintListener : Listener {
 
                     val sprintStartTime = sprintTimes[uuid] ?: 0
                     val sprintDuration = System.currentTimeMillis() - sprintStartTime
+                    val maxSprintTime = loadPlayerData(uuid, "max-sprint-time", 10000L)
                     if (sprintDuration > maxSprintTime) {
                         player.isSprinting = false
                         cooldownTimes[uuid] = System.currentTimeMillis()
@@ -58,8 +54,16 @@ class SprintListener : Listener {
                         cancel()
                     }
                 }
-            }.runTaskTimer(AbilitiesSystem.instance, 0, 20)
+            }.runTaskTimer(AbilitiesSystem.instance, 0, 20) // Check every second
             sprintTimes[uuid] = System.currentTimeMillis()
         }
+    }
+
+    private fun loadPlayerData(playerUUID: UUID, key: String, defaultValue: Long): Long {
+        val configFile = File(AbilitiesSystem.instance.dataFolder, "playerdata.yml")
+        if (!configFile.exists()) return defaultValue
+
+        val config = YamlConfiguration.loadConfiguration(configFile)
+        return config.getLong("$playerUUID.$key", defaultValue)
     }
 }
