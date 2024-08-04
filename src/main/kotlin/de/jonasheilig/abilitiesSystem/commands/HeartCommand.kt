@@ -1,5 +1,6 @@
 package de.jonasheilig.abilitiesSystem.commands
 
+import de.jonasheilig.abilitiesSystem.AbilitiesSystem
 import org.bukkit.Bukkit
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
@@ -15,7 +16,8 @@ class HeartCommand : CommandExecutor {
                 val hearts: Double = args[1].toDoubleOrNull() ?: return false
 
                 if (targetPlayer != null && hearts > 0) {
-                    targetPlayer.maxHealth = hearts * 2
+                    val attribute = targetPlayer.getAttribute(org.bukkit.attribute.Attribute.GENERIC_MAX_HEALTH)
+                    attribute?.baseValue = hearts * 2
                     targetPlayer.health = hearts * 2
                     sender.sendMessage("Gesundheit von ${targetPlayer.name} auf $hearts Herzen gesetzt.")
                     return true

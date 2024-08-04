@@ -9,10 +9,11 @@ class AbilitiesSystem : JavaPlugin() {
 
     override fun onEnable() {
         // Plugin startup logic
+        saveDefaultConfig()
         server.pluginManager.registerEvents(HealthListener(), this)
         server.pluginManager.registerEvents(HeartAppleListener(), this)
+        server.pluginManager.registerEvents(PlayerQuitListener(), this)
         getCommand("heart")?.setExecutor(HeartCommand())
-        saveDefaultConfig()
     }
 
     override fun onDisable() {
