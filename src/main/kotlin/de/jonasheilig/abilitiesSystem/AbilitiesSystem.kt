@@ -14,6 +14,7 @@ class AbilitiesSystem : JavaPlugin() {
         server.pluginManager.registerEvents(HeartAppleListener(), this)
         server.pluginManager.registerEvents(PlayerQuitListener(), this)
         server.pluginManager.registerEvents(SprintListener(), this)
+        server.pluginManager.registerEvents(SprintAppleListener(), this)
         getCommand("heart")?.setExecutor(HeartCommand())
     }
 
