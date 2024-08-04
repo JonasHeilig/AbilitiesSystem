@@ -1,1 +1,3 @@
 default-hearts: 4.0
+max-sprint-time: 10000
+cooldown-time: 5000
