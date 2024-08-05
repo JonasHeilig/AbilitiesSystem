@@ -15,6 +15,9 @@ commands:
     description: Set the max sprint time for a player
     usage: /setSprintTime <player> <sprintTime>
     permission: abilitiesSystem.setSprintTime
+  stats:
+    description: Show player stats
+    usage: /stats
 permissions:
   abilitiesSystem.heart:
     description: Allows the player to use the /heart command
