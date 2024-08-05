@@ -1,13 +1,11 @@
 package de.jonasheilig.abilitiesSystem.listeners
 
 import de.jonasheilig.abilitiesSystem.AbilitiesSystem
-import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerToggleSprintEvent
 import org.bukkit.scheduler.BukkitRunnable
-import java.io.File
 import java.util.*
 
 class SprintListener : Listener {
@@ -30,7 +28,7 @@ class SprintListener : Listener {
         if (event.isSprinting) {
             val currentTime = System.currentTimeMillis()
             val lastCooldownTime = cooldownTimes[uuid] ?: 0
-            val cooldownTime = loadPlayerData(uuid, "cooldown-time", 5000L)
+            val cooldownTime = AbilitiesSystem.instance.databaseManager.loadPlayerData(uuid, "cooldown_time", 5000L)
             if (currentTime < lastCooldownTime + cooldownTime) {
                 event.isCancelled = true
                 player.sendMessage("Du musst warten, bevor du wieder sprinten kannst!")
@@ -46,7 +44,7 @@ class SprintListener : Listener {
 
                     val sprintStartTime = sprintTimes[uuid] ?: 0
                     val sprintDuration = System.currentTimeMillis() - sprintStartTime
-                    val maxSprintTime = loadPlayerData(uuid, "max-sprint-time", 10000L)
+                    val maxSprintTime = AbilitiesSystem.instance.databaseManager.loadPlayerData(uuid, "max_sprint_time", 10000L)
                     if (sprintDuration > maxSprintTime) {
                         player.isSprinting = false
                         cooldownTimes[uuid] = System.currentTimeMillis()
@@ -57,13 +55,5 @@ class SprintListener : Listener {
             }.runTaskTimer(AbilitiesSystem.instance, 0, 20) // Check every second
             sprintTimes[uuid] = System.currentTimeMillis()
         }
-    }
-
-    private fun loadPlayerData(playerUUID: UUID, key: String, defaultValue: Long): Long {
-        val configFile = File(AbilitiesSystem.instance.dataFolder, "playerdata.yml")
-        if (!configFile.exists()) return defaultValue
-
-        val config = YamlConfiguration.loadConfiguration(configFile)
-        return config.getLong("$playerUUID.$key", defaultValue)
     }
 }

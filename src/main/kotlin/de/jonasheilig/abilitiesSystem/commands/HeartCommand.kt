@@ -19,6 +19,7 @@ class HeartCommand : CommandExecutor {
                     val attribute = targetPlayer.getAttribute(org.bukkit.attribute.Attribute.GENERIC_MAX_HEALTH)
                     attribute?.baseValue = hearts * 2
                     targetPlayer.health = hearts * 2
+                    AbilitiesSystem.instance.databaseManager.savePlayerHearts(targetPlayer.name, hearts * 2)
                     sender.sendMessage("Gesundheit von ${targetPlayer.name} auf $hearts Herzen gesetzt.")
                     return true
                 }

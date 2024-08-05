@@ -2,12 +2,10 @@ package de.jonasheilig.abilitiesSystem.listeners
 
 import de.jonasheilig.abilitiesSystem.AbilitiesSystem
 import org.bukkit.NamespacedKey
-import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.persistence.PersistentDataType
-import java.io.File
 
 class HeartAppleListener : Listener {
 
@@ -24,14 +22,7 @@ class HeartAppleListener : Listener {
             player.health = maxHealth + 2
 
             item.amount -= 1
-            savePlayerHearts(player.name, maxHealth + 2)
+            AbilitiesSystem.instance.databaseManager.savePlayerHearts(player.name, maxHealth + 2)
         }
-    }
-
-    private fun savePlayerHearts(playerName: String, hearts: Double) {
-        val configFile = File(AbilitiesSystem.instance.dataFolder, "heart.yml")
-        val config = YamlConfiguration.loadConfiguration(configFile)
-        config.set(playerName, hearts)
-        config.save(configFile)
     }
 }

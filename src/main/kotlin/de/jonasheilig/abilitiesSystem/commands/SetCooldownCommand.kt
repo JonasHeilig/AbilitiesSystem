@@ -6,8 +6,6 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
-import org.bukkit.configuration.file.YamlConfiguration
-import java.io.File
 
 class SetCooldownCommand : CommandExecutor {
 
@@ -18,19 +16,12 @@ class SetCooldownCommand : CommandExecutor {
                 val cooldownTime: Long = args[1].toLongOrNull() ?: return false
 
                 if (targetPlayer != null && cooldownTime >= 0) {
-                    savePlayerData(targetPlayer.uniqueId.toString(), "cooldown-time", cooldownTime)
+                    AbilitiesSystem.instance.databaseManager.savePlayerData(targetPlayer.uniqueId, "cooldown_time", cooldownTime)
                     sender.sendMessage("Abklingzeit für ${targetPlayer.name} auf $cooldownTime Millisekunden gesetzt.")
                     return true
                 }
             }
         }
         return false
-    }
-
-    private fun savePlayerData(playerUUID: String, key: String, value: Any) {
-        val configFile = File(AbilitiesSystem.instance.dataFolder, "playerdata.yml")
-        val config = YamlConfiguration.loadConfiguration(configFile)
-        config.set("$playerUUID.$key", value)
-        config.save(configFile)
     }
 }
