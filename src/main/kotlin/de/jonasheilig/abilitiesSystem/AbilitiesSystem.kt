@@ -21,9 +21,12 @@ class AbilitiesSystem : JavaPlugin() {
         server.pluginManager.registerEvents(PlayerQuitListener(), this)
         server.pluginManager.registerEvents(SprintListener(), this)
         server.pluginManager.registerEvents(SprintAppleListener(), this)
+        server.pluginManager.registerEvents(InfiniteSprintAppleListener(), this)
+        server.pluginManager.registerEvents(InvincibleAppleListener(), this)
         getCommand("heart")?.setExecutor(HeartCommand())
         getCommand("setsprinttime")?.setExecutor(SetSprintTimeCommand())
         getCommand("setcooldown")?.setExecutor(SetCooldownCommand())
+        getCommand("stats")?.setExecutor(StatsCommand())
     }
 
     override fun onDisable() {
