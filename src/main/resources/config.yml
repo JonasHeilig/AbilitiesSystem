@@ -1,3 +1,9 @@
+useMySQL: true
+username: "yourUsername"
+password: "yourPassword"
+url: "jdbc:mysql://localhost"
+port: 3306
+database: "yourDatabaseName"
 default-hearts: 4.0
 max-sprint-time: 5000
 cooldown-time: 5000
